@@ -1,0 +1,43 @@
+batch gradient decent
+---------------------
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import sklearn.preprocessing as pp
+
+df=pd.read_excel("Z:\\ML(machine learning)\\prices.xlsx")
+df
+
+sx=pp.MinMaxScaler()
+sy=pp.MinMaxScaler()
+
+xscale=sx.fit_transform(df.drop('Prices',axis='columns'))
+yscale=sy.fit_transform(df[['Prices']])
+
+def bgd(x,y,epochs,lr=0.001):
+    n=x.shape[1]
+    m=np.ones(shape=n)
+    c=0
+    el=[]
+    cl=[]
+    for i in range(epochs):
+        yp=np.dot(m,x.T)+c
+        dm=-(2/n)*np.dot(x.T,(y-yp))
+        dc=-(2/n)*np.sum(y-yp)
+        m=m-lr*dm
+        c=c-lr*dc
+        cost=np.mean(np.square(y-yp))
+        if i%10==0:
+            el.append(i)
+            cl.append(cost)
+    return m,c,cost,el,cl
+
+
+m,c,cost,el,cl=bgd(xscale,yscale.reshape(yscale.shape[0]),500)
+m,c,cost
+
+plt.xlabel('epochs')
+plt.ylabel('costs')
+plt.plot(cl,el)
+plt.show()
+

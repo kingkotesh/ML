@@ -1,0 +1,62 @@
+Heirarichal clustering
+------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy.cluster.hierarchy as ch
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.preprocessing import MinMaxScaler
+
+df=pd.read_csv('C:\\Users\\king\\Desktop\\clustering.csv')
+df.head()
+
+plt.figure(figsize=(10,7))
+plt.scatter(df['age'],df['salary'])
+plt.xlabel('age')
+plt.ylabel('salary')
+plt.show()
+
+model=AgglomerativeClustering(n_clusters=3)
+yp=model.fit_predict(df[['age','salary']])
+yp
+
+df['cluster']=yp
+df.head()
+
+df1=df[df['cluster']==0]
+df2=df[df['cluster']==1]
+df3=df[df['cluster']==2]
+
+plt.figure(figsize=(10,7))
+plt.scatter(df1['age'],df1['salary'],color='red')
+plt.scatter(df2['age'],df2['salary'],color='green')
+plt.scatter(df3['age'],df3['salary'],color='blue')
+plt.xlabel('age')
+plt.ylabel('salary')
+plt.show()
+
+s=MinMaxScaler()
+df['age']=s.fit_transform(df[['age']])
+df['salary']=s.fit_transform(df[['salary']])
+df.head()
+
+df1=df[df['cluster']==0]
+df2=df[df['cluster']==1]
+df3=df[df['cluster']==2]
+
+plt.figure(figsize=(10,7))
+plt.scatter(df1['age'],df1['salary'],color='red')
+plt.scatter(df2['age'],df2['salary'],color='green')
+plt.scatter(df3['age'],df3['salary'],color='blue')
+plt.xlabel('age')
+plt.ylabel('salary')
+plt.show()
+
+x=df[['age','salary']]
+x.head()
+
+d=ch.dendrogram(ch.linkage(x,method='ward'))
+plt.xlabel('data points')
+plt.ylabel('distance')
+plt.title('dendrogram')
+plt.show()

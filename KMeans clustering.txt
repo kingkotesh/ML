@@ -1,0 +1,51 @@
+KMeans clustering
+------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+import sklearn.preprocessing as pp
+
+df=pd.read_excel("Z:\\emp.xlsx")
+df
+
+plt.scatter(df['age'],df['sal'])
+plt.xlabel('age')
+plt.ylabel('sal')
+plt.show()
+
+k_range=range(1,10)
+sse=[]
+for i in k_range:
+    km=KMeans(n_clusters=i)
+    km.fit(df[['age','sal']])
+    sse.append(km.inertia_)
+sse
+
+plt.plot(k_range,sse,marker='^')
+plt.xlabel('k')
+plt.ylabel('sse')
+plt.show()
+
+def fun():
+    m=KMeans(n_clusters=3)
+    m.fit(df[['age','sal']])
+    yp=m.predict(df[['age','sal']])
+    df['cluster']=yp
+    df1=df[df['cluster']==0]
+    df2=df[df['cluster']==1]
+    df3=df[df['cluster']==2]
+    plt.scatter(df1['age'],df1['sal'],color='green')
+    plt.scatter(df2['age'],df2['sal'],color='red')
+    plt.scatter(df3['age'],df3['sal'],color='violet')
+    plt.scatter(m.cluster_centers_[:,0],m.cluster_centers_[:1],color='violet',marker='*',s=200)
+    plt.xlabel('age')
+    plt.ylabel('sal')
+    plt.show()
+fun()
+
+s=pp.MinMaxScaler()
+df['age']=s.fit_transform(df[['age']])
+df['sal']=s.fit_transform(df[['sal']])
+fun()
+

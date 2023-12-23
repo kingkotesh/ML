@@ -1,0 +1,17 @@
+Logistic Regression(multi-class)
+-----------------------------
+from sklearn.datasets import load_digits
+d=load_digits()
+import matplotlib.pyplot as plt
+plt.matshow(d.images[0])
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(d.data,d.target,train_size=0.8)
+from sklearn.linear_model import LogisticRegression
+model=LogisticRegression()
+model.fit(x_train,y_train)
+plt.matshow(d.images[60])
+d.target[60]
+model.predict([d.data[60]])
+model.score(x_test,y_test)*100
+model.score(x_train,y_train)*100
+

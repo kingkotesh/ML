@@ -1,0 +1,30 @@
+RandomForest
+-------------
+from sklearn.datasets import load_digits
+d=load_digits()
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(d.data,d.target,train_size=0.8)
+
+from sklearn.ensemble import RandomForestClassifier
+model=RandomForestClassifier()
+model.fit(x_train,y_train)
+y_pred=model.predict(x_test)
+y_pred
+
+print("Prediction:",model.predict([d.data[60]]))
+
+import matplotlib.pyplot as mp
+mp.gray()
+mp.matshow(d.images[60])
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_test,y_pred)
+cm
+
+import seaborn as sb
+sb.heatmap(cm,annot=True)
+mp.xlabel("Predixted")
+mp.ylabel("actual")
+mp.title("Confusion Matrix")
+mp.show()

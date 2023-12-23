@@ -1,0 +1,18 @@
+simple linear regression
+--------------------------------
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import sklearn.linear_model as lr
+
+df=pd.read_csv("C:\\ROMAN REIGNS\\ML\\lab\\emp.csv")
+df
+
+mlr=lr.LinearRegression()
+mlr.fit(df[['exp']],df[['salary']])
+df1=pd.read_csv("C:\\ROMAN REIGNS\\ML\\lab\\empexp.csv")
+df1
+df1['salary']=np.round(mlr.predict(df1[['exp']]))
+df1
+
+print(np.round(mlr.predict([[15]])))

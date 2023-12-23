@@ -1,0 +1,13 @@
+multiple linear regression
+-------------------------
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import sklearn.linear_model as lr
+
+df=pd.read_csv("C:\\ROMAN REIGNS\\ML\\lab\\emp.csv")
+df
+
+mlr=lr.LinearRegression()
+mlr.fit(df[['exp','wtime']],df[['salary']])
+print(np.round(mlr.predict([[5,25]])))

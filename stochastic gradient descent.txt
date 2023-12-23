@@ -1,0 +1,49 @@
+stochastic gradient descent
+----------------------------
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import sklearn.preprocessing as pp
+import random
+
+df=pd.read_excel("Z:\\ML(machine learning)\\prices.xlsx")
+df
+
+sx=pp.MinMaxScaler()
+sy=pp.MinMaxScaler()
+
+xscale=sx.fit_transform(df.drop('Prices',axis='columns'))
+yscale=sy.fit_transform(df['Prices'].values.reshape(df.shape[0],1))
+
+def bgd(x,y,epochs,lr=0.0001):
+    nf=x.shape[1]
+    m=np.ones(shape=nf)
+    n=x.shape[0]
+    c=0
+    cl=[]
+    el=[]
+    for i in range(epochs):
+        r=random.randint(0,n-1)
+        xs=x[r]
+        ys=y[r]
+        
+        yp=np.dot(m,xs.T)+c
+        dm=-(2/n)*np.dot(xs.T,(ys-yp))
+        dc=-(2/n)*np.sum(ys-yp)
+        m=m-lr*dm
+        c=c-lr*dc
+        cost=np.square(ys-yp)
+        if i%100==0:
+            cl.append(cost)
+            el.append(i)
+    return m,c,cost,el,cl
+
+m,c,cost,el,cl=bgd(xscale,yscale.reshape(yscale.shape[0]),10000)
+m,c,cost
+
+plt.xlabel('epochs')
+plt.ylabel('cost')
+plt.plot(el,cl)
+plt.show()	
+
